@@ -14,6 +14,8 @@ connectDB();
 const route=require('./routes/mainroutes')
 
 const app = express();
+//body parser
+app.use(express.json())
 
 app.use(logger)
 //mount routes
