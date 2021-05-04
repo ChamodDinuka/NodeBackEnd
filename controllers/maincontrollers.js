@@ -1,12 +1,24 @@
 const test = require('../models/testmodel')
 //GET /
-exports.getClass=(req,res,next)=>{
-    res.status(200).json({status:true})
+exports.getClass=async (req,res,next)=>{
+    try{
+    const data= await test.find()
+    res.status(200).json({success:true,data:data})
+    }catch{
+        res.status(400).json({success:false})
+    }
 }
 
 //PUT /:id
-exports.updateClass=(req,res,next)=>{
-    res.status(200).json({id:`${req.params.id}`})
+exports.updateClass=async(req,res,next)=>{
+    const data=await test.findByIdAndUpdate(req.params.id,req.body,{
+        new:true,
+        runValidators:true
+    })
+    if(!data){
+       return res.status(400).json({success:false}) 
+    }
+    res.status(200).json({success:true,data:data})
 }
 exports.postClass=async(req,res,next)=>{
     //console.log(req.body)
@@ -15,4 +27,15 @@ exports.postClass=async(req,res,next)=>{
         success:true,
         data:newdata
     })
+}
+exports.deleteClass=async(req,res,next)=>{
+    try{
+    const deletedata= await test.findByIdAndDelete(req.params.id)
+    if(!deletedata){
+        return res.status(400).json({success:false})
+    }
+    res.status(200).json({success:true,data:deletedata})
+    }catch{
+    res.status(400).json({success:false})
+    }
 }
