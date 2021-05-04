@@ -1,22 +1,35 @@
 const http = require('http')
 const express=require('express')
 const dotenv=require('dotenv')
-//route file
-const route=require('./routes/mainroutes')
+const connectDB=require('./config/db')
+//middleware
+const logger=require('./middleware/logger')
+
 //load env vars
 dotenv.config({path:'./config/config.env'})
+//connect to db'
+connectDB();
+
+//route file
+const route=require('./routes/mainroutes')
 
 const app = express();
 
+app.use(logger)
 //mount routes
 app.use('/',route)
 
 const PORT = process.env.PORT || 5000
 
-app.listen(
+const server = app.listen(
     PORT,
     console.log(`${process.env.PORT}`)
 );
+//Hanle unhandle promise
+process.on('unhandledRejection',(err,promise)=>{
+    console.log(`error:${err.message}`)
+    server.close(()=>process.exit(1))
+})
 //const dataset=
 //     {
 //         id:1,
