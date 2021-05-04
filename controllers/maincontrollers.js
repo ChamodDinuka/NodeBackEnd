@@ -1,3 +1,4 @@
+const { text } = require('body-parser')
 const test = require('../models/testmodel')
 //GET /
 exports.getClass=async (req,res,next)=>{
@@ -11,6 +12,7 @@ exports.getClass=async (req,res,next)=>{
 
 //PUT /:id
 exports.updateClass=async(req,res,next)=>{
+    try{
     const data=await test.findByIdAndUpdate(req.params.id,req.body,{
         new:true,
         runValidators:true
@@ -19,6 +21,9 @@ exports.updateClass=async(req,res,next)=>{
        return res.status(400).json({success:false}) 
     }
     res.status(200).json({success:true,data:data})
+    }catch(err){
+    next(err)
+    }
 }
 exports.postClass=async(req,res,next)=>{
     //console.log(req.body)
@@ -35,7 +40,8 @@ exports.deleteClass=async(req,res,next)=>{
         return res.status(400).json({success:false})
     }
     res.status(200).json({success:true,data:deletedata})
-    }catch{
-    res.status(400).json({success:false})
+    }catch(err){
+    //res.status(400).json({success:false})
+    next(err)
     }
 }
