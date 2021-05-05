@@ -13,6 +13,7 @@ connectDB();
 
 //route file
 const route=require('./routes/mainroutes')
+const auth=require('./routes/auth')
 
 const app = express();
 //body parser
@@ -21,6 +22,7 @@ app.use(express.json())
 app.use(logger)
 //mount routes
 app.use('/',route)
+app.use('/',auth)
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
