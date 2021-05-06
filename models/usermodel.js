@@ -30,5 +30,9 @@ userShema.methods.getSignedJwtToken = function(){
         expiresIn:process.env.JWT_EXPIRE
     })
 }
+//Dcript password
+userShema.methods.match =async function(enteredPassword){
+    return await bcrypt.compare(enteredPassword,this.password)
+}
 
 module.exports=mongoose.model('User',userShema)

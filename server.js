@@ -3,6 +3,7 @@ const express=require('express')
 const dotenv=require('dotenv')
 const connectDB=require('./config/db')
 const errorHandler=require('./middleware/error')
+const cookieParser = require('cookie-parser')
 //middleware
 const logger=require('./middleware/logger')
 
@@ -18,6 +19,8 @@ const auth=require('./routes/auth')
 const app = express();
 //body parser
 app.use(express.json())
+//cookieparser
+app.use(cookieParser())
 
 app.use(logger)
 //mount routes
